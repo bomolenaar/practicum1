@@ -13,11 +13,15 @@ namespace Hallo
             scherm = new Scherm();
             Application.Run(new Scherm());
         }
+
     }
     //Form class
     //liefst hier nog toevoegen dat de knoppen in eerste instantie automatisch centreren ongeacht schermformaat (anders laten zoals het is - berekend op een 1920x1080px scherm)
     class Scherm : Form
     {
+        public DateTime Starttijd;
+        public DateTime Reactietijd;
+
         //Form method
         public Scherm()
         {
@@ -71,12 +75,14 @@ namespace Hallo
             {
                 start.Visible = false;
                 reactie.Visible = true;
+                DateTime Starttijd = DateTime.Now;
             }
 
             void reactie_klik(object sender, EventArgs e)
             {
                 start.Visible = true;
                 reactie.Visible = false;
+
                 int r4 = rnd.Next(80, 500);
                 reactie.Size = new Size(r4, r4);
                 Thread.Sleep(5);
@@ -84,6 +90,11 @@ namespace Hallo
                 Thread.Sleep(11);
                 int r6 = rnd.Next(1030);
                 reactie.Location = new Point(r5, r6);
+
+                DateTime Reactietijd = DateTime.Now;
+                long elapsedTicks = Reactietijd.Ticks - Starttijd.Ticks;
+                TimeSpan elapsedSpan = new TimeSpan(elapsedTicks);
+                Console.WriteLine(elapsedSpan);
             }
 
         }
