@@ -24,13 +24,22 @@ namespace Practicum1
         public Button reactie; Button start;
         public Random rnd;
         public Point startplek; Point reactieplek1; Point reactieplek2; Point muisplek;
-       
-        //Form method
+        public Graphics g;
+        public double dpi, dx, dy, dpx, d;
+        public int sb, sh, sb2, sh2;
+
+       //Form method
         public Scherm()
         {
             this.Text = "Fitts' Law";
             this.BackColor = Color.CadetBlue;
             this.WindowState = FormWindowState.Maximized;
+            
+            //D
+            g = this.CreateGraphics();
+            dpi = g.DpiX;
+            dpx = Math.Sqrt((dx * dx) + (dy * dy));
+            d = (dpx / dpi) * 2.54;
 
             //Random Number Generator
             rnd = new Random();
@@ -41,7 +50,6 @@ namespace Practicum1
             int r3 = rnd.Next(30, 500);
 
             //Locaties
-            startplek = new Point(910, 490);
             reactieplek1 = new Point(r1, r2);
 
             //'Start' knop
@@ -68,44 +76,53 @@ namespace Practicum1
 
             this.Controls.Add(start);
             this.Controls.Add(reactie);
+            this.SizeChanged +=maximaliseren;
             start.Click += start_klik;
             reactie.Click += reactie_klik;
             
         }
-        //Event Handlers   
-            void start_klik(object sender, EventArgs e)
-            {
-                start.Visible = !start.Visible;
-                reactie.Visible = !reactie.Visible;
+        //Event Handlers
+        public void maximaliseren(object obj, EventArgs e)
+        {
+            sb = Width;
+            sh = Height;
+            sb2 = (sb / 2) - 50;
+            sh2 = (sh / 2) - 50;
+            startplek = new Point(sb2, sh2);
+        }
 
-                Starttijd = DateTime.Now;
+        void start_klik(object sender, EventArgs e)
+        {
+            start.Visible = !start.Visible;
+            reactie.Visible = !reactie.Visible;
 
-                muisplek = MousePosition;
-            }
+            Starttijd = DateTime.Now;
 
-            void reactie_klik(object sender, EventArgs e)
-            {
-                start.Visible = !start.Visible;
-                reactie.Visible = !reactie.Visible;
+            muisplek = MousePosition;
+        }
 
-                int r4 = rnd.Next(80, 500);
-                reactie.Size = new Size(r4, r4);
-                Thread.Sleep(5);
-                int r5 = rnd.Next(1870);
-                Thread.Sleep(11);
-                int r6 = rnd.Next(1030);
-                reactieplek2 = new Point(r5, r6);
-                reactie.Location = reactieplek2;
+        void reactie_klik(object sender, EventArgs e)
+        {
+            start.Visible = !start.Visible;
+            reactie.Visible = !reactie.Visible;
 
-                double dx = reactieplek2.X - muisplek.X;
-                double dy = reactieplek2.Y - muisplek.Y;
-                double d = Math.Sqrt((dx * dx) + (dy * dy));
+            int r4 = rnd.Next(80, 500);
+            reactie.Size = new Size(r4, r4);
+            Thread.Sleep(5);
+            int r5 = rnd.Next(1870);
+            Thread.Sleep(11);
+            int r6 = rnd.Next(1030);
+            reactieplek2 = new Point(r5, r6);
+            reactie.Location = reactieplek2;
+
+            dx = reactieplek2.X - muisplek.X;
+            dy = reactieplek2.Y - muisplek.Y;
                 
-                Console.WriteLine(d);
+            Console.WriteLine(d);
 
-                Reactietijd = DateTime.Now;
-                TimeSpan elapsedSpan = (Reactietijd- Starttijd);
-                Console.WriteLine(elapsedSpan);
-            }
+            Reactietijd = DateTime.Now;
+            TimeSpan elapsedSpan = (Reactietijd- Starttijd);
+            Console.WriteLine(elapsedSpan);
+        }
     }
 }
