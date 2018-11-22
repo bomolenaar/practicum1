@@ -3,9 +3,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
 
-namespace Hallo
+namespace Practicum1
 {
-    class Help
+    class Run
     {
         static void Main()
         {
@@ -29,18 +29,18 @@ namespace Hallo
             this.BackColor = Color.CadetBlue;
             this.WindowState = FormWindowState.Maximized;
 
-            //Locaties
-            Point startplek; Point reactieplek;
-            startplek = new Point(910, 490);
-            reactieplek = new Point(400, 200);
-
-            //Random Number Generator
+           //Random Number Generator
             Random rnd = new Random();
             int r1 = rnd.Next(1870);
             Thread.Sleep(9);
             int r2 = rnd.Next(1030);
             Thread.Sleep(3);
             int r3 = rnd.Next(30, 500);
+
+            //Locaties
+            Point startplek; Point reactieplek1; Point reactieplek2; Point muisplek;
+            startplek = new Point(910, 490);
+            reactieplek1 = new Point(r1, r2);
 
             //'Start' knop
             Button start;
@@ -60,7 +60,7 @@ namespace Hallo
             {
                 Text = "Click here",
                 Font = new Font("Comic Sans MS", 20),
-                Location = reactieplek,
+                Location = reactieplek1,
                 BackColor = Color.HotPink,
                 Size = new Size(r3, r3),
                 Visible = false,
@@ -68,18 +68,23 @@ namespace Hallo
 
             this.Controls.Add(start);
             this.Controls.Add(reactie);
-            start.Click += knop_klik;
-            reactie.Click += knop_klik;
+            start.Click += start_klik;
+            reactie.Click += reactie_klik;
 
             //daadwerkelijke functionaliteit van de knoppen          
-//            void start_klik(object sender, EventArgs e)
-//            {
-//                start.Visible = false;
-//                reactie.Visible = true;
-//                DateTime Starttijd = DateTime.Now;
-//            }
+            void start_klik(object sender, EventArgs e)
+            {
+                start.Visible = !start.Visible;
+                reactie.Visible = !reactie.Visible;
 
-            void knop_klik(object sender, EventArgs e)
+                Starttijd = DateTime.Now;
+
+                muisplek = MousePosition;
+                Console.WriteLine(muisplek);
+
+            }
+
+            void reactie_klik(object sender, EventArgs e)
             {
                 start.Visible = !start.Visible;
                 reactie.Visible = !reactie.Visible;
@@ -90,9 +95,15 @@ namespace Hallo
                 int r5 = rnd.Next(1870);
                 Thread.Sleep(11);
                 int r6 = rnd.Next(1030);
-                reactie.Location = new Point(r5, r6);
+                reactieplek2 = new Point(r5, r6);
+                reactie.Location = reactieplek2;
 
-                TimeSpan elapsedSpan = (DateTime.Now- Starttijd);
+                Console.WriteLine(reactieplek2);
+
+             //   double dpx = Point.Subtract(reactieplek2, muisplek);
+
+                Reactietijd = DateTime.Now;
+                TimeSpan elapsedSpan = (Reactietijd- Starttijd);
                 Console.WriteLine(elapsedSpan);
             }
 
