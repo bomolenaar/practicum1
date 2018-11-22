@@ -51,6 +51,7 @@ namespace Hallo
                 Location = startplek,
                 BackColor = Color.BlueViolet,
                 Size = new Size(100, 100),
+                Visible = true,
             };
 
             //'Reactie' knop
@@ -67,21 +68,21 @@ namespace Hallo
 
             this.Controls.Add(start);
             this.Controls.Add(reactie);
-            start.Click += start_klik;
-            reactie.Click += reactie_klik;
+            start.Click += knop_klik;
+            reactie.Click += knop_klik;
 
             //daadwerkelijke functionaliteit van de knoppen          
-            void start_klik(object sender, EventArgs e)
-            {
-                start.Visible = false;
-                reactie.Visible = true;
-                DateTime Starttijd = DateTime.Now;
-            }
+//            void start_klik(object sender, EventArgs e)
+//            {
+//                start.Visible = false;
+//                reactie.Visible = true;
+//                DateTime Starttijd = DateTime.Now;
+//            }
 
-            void reactie_klik(object sender, EventArgs e)
+            void knop_klik(object sender, EventArgs e)
             {
-                start.Visible = true;
-                reactie.Visible = false;
+                start.Visible = !start.Visible;
+                reactie.Visible = !reactie.Visible;
 
                 int r4 = rnd.Next(80, 500);
                 reactie.Size = new Size(r4, r4);
@@ -91,9 +92,7 @@ namespace Hallo
                 int r6 = rnd.Next(1030);
                 reactie.Location = new Point(r5, r6);
 
-                DateTime Reactietijd = DateTime.Now;
-                long elapsedTicks = Reactietijd.Ticks - Starttijd.Ticks;
-                TimeSpan elapsedSpan = new TimeSpan(elapsedTicks);
+                TimeSpan elapsedSpan = (DateTime.Now- Starttijd);
                 Console.WriteLine(elapsedSpan);
             }
 
