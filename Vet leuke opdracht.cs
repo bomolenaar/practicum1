@@ -24,22 +24,14 @@ namespace Practicum1
         public Button reactie; Button start;
         public Random rnd;
         public Point startplek; Point reactieplek1; Point reactieplek2; Point muisplek;
-        public Graphics g;
-        public double dpi, dx, dy, dpx, d;
-        public int sb, sh, sb2, sh2;
+        public int r3;
 
-       //Form method
+        //Form method
         public Scherm()
         {
             this.Text = "Fitts' Law";
             this.BackColor = Color.CadetBlue;
             this.WindowState = FormWindowState.Maximized;
-            
-            //D
-            g = this.CreateGraphics();
-            dpi = g.DpiX;
-            dpx = Math.Sqrt((dx * dx) + (dy * dy));
-            d = (dpx / dpi) * 2.54;
 
             //Random Number Generator
             rnd = new Random();
@@ -47,9 +39,10 @@ namespace Practicum1
             Thread.Sleep(9);
             int r2 = rnd.Next(1030);
             Thread.Sleep(3);
-            int r3 = rnd.Next(30, 500);
+            r3 = rnd.Next(30, 500);
 
             //Locaties
+            startplek = new Point(300,100);
             reactieplek1 = new Point(r1, r2);
 
             //'Start' knop
@@ -76,21 +69,11 @@ namespace Practicum1
 
             this.Controls.Add(start);
             this.Controls.Add(reactie);
-            this.SizeChanged +=maximaliseren;
             start.Click += start_klik;
             reactie.Click += reactie_klik;
-            
-        }
-        //Event Handlers
-        public void maximaliseren(object obj, EventArgs e)
-        {
-            sb = Width;
-            sh = Height;
-            sb2 = (sb / 2) - 50;
-            sh2 = (sh / 2) - 50;
-            startplek = new Point(sb2, sh2);
-        }
 
+        }
+        //Event Handlers   
         void start_klik(object sender, EventArgs e)
         {
             start.Visible = !start.Visible;
@@ -115,14 +98,18 @@ namespace Practicum1
             reactieplek2 = new Point(r5, r6);
             reactie.Location = reactieplek2;
 
-            dx = reactieplek2.X - muisplek.X;
-            dy = reactieplek2.Y - muisplek.Y;
-                
-            Console.WriteLine(d);
+            double dx = reactieplek2.X - muisplek.X;
+            double dy = reactieplek2.Y - muisplek.Y;
+            double dpx = Math.Sqrt((dx * dx) + (dy * dy));
+            Console.WriteLine("D: " + dpx);
+ 
+            Console.WriteLine("W: " + r3);
+            Console.WriteLine("ID: " + Math.Log((2*dpx / r3), 2.0));
+            Console.WriteLine("T: ");
 
             Reactietijd = DateTime.Now;
-            TimeSpan elapsedSpan = (Reactietijd- Starttijd);
-            Console.WriteLine(elapsedSpan);
+            TimeSpan elapsedSpan = (Reactietijd - Starttijd);
+            Console.WriteLine("time: " + elapsedSpan);
         }
     }
 }
