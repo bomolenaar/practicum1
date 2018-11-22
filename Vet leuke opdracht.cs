@@ -19,9 +19,12 @@ namespace Practicum1
     //liefst hier nog toevoegen dat de knoppen in eerste instantie automatisch centreren ongeacht schermformaat (anders laten zoals het is - berekend op een 1920x1080px scherm)
     class Scherm : Form
     {
-        public DateTime Starttijd;
-        public DateTime Reactietijd;
-
+        //Declaraties
+        public DateTime Starttijd; DateTime Reactietijd;
+        public Button reactie; Button start;
+        public Random rnd;
+        public Point startplek; Point reactieplek1; Point reactieplek2; Point muisplek;
+       
         //Form method
         public Scherm()
         {
@@ -29,8 +32,8 @@ namespace Practicum1
             this.BackColor = Color.CadetBlue;
             this.WindowState = FormWindowState.Maximized;
 
-           //Random Number Generator
-            Random rnd = new Random();
+            //Random Number Generator
+            rnd = new Random();
             int r1 = rnd.Next(1870);
             Thread.Sleep(9);
             int r2 = rnd.Next(1030);
@@ -38,12 +41,10 @@ namespace Practicum1
             int r3 = rnd.Next(30, 500);
 
             //Locaties
-            Point startplek; Point reactieplek1; Point reactieplek2; Point muisplek;
             startplek = new Point(910, 490);
             reactieplek1 = new Point(r1, r2);
 
             //'Start' knop
-            Button start;
             start = new Button
             {
                 Text = "Click here",
@@ -55,7 +56,6 @@ namespace Practicum1
             };
 
             //'Reactie' knop
-            Button reactie;
             reactie = new Button
             {
                 Text = "Click here",
@@ -70,8 +70,9 @@ namespace Practicum1
             this.Controls.Add(reactie);
             start.Click += start_klik;
             reactie.Click += reactie_klik;
-
-            //daadwerkelijke functionaliteit van de knoppen          
+            
+        }
+        //Event Handlers   
             void start_klik(object sender, EventArgs e)
             {
                 start.Visible = !start.Visible;
@@ -80,8 +81,6 @@ namespace Practicum1
                 Starttijd = DateTime.Now;
 
                 muisplek = MousePosition;
-                Console.WriteLine(muisplek);
-
             }
 
             void reactie_klik(object sender, EventArgs e)
@@ -98,15 +97,15 @@ namespace Practicum1
                 reactieplek2 = new Point(r5, r6);
                 reactie.Location = reactieplek2;
 
-                Console.WriteLine(reactieplek2);
-
-             //   double dpx = Point.Subtract(reactieplek2, muisplek);
+                double dx = reactieplek2.X - muisplek.X;
+                double dy = reactieplek2.Y - muisplek.Y;
+                double d = Math.Sqrt((dx * dx) + (dy * dy));
+                
+                Console.WriteLine(d);
 
                 Reactietijd = DateTime.Now;
                 TimeSpan elapsedSpan = (Reactietijd- Starttijd);
                 Console.WriteLine(elapsedSpan);
             }
-
-        }
     }
 }
